@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CPC Clinic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="images/favicon.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Poltawski+Nowy:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Poltawski Nowy', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      position: relative;
+      color: white;
+      background: white;
+    }
+
+    /* White tilt background */
+    .bg-white-tilt {
+      position: absolute;
+      top: -30%;
+      left: -30%;
+      width: 160%;
+      height: 160%;
+      background: #ffffff;
+      transform: rotate(25deg);
+      z-index: -3;
+    }
+
+    /* Deep red background shape */
+    .bg-red-tilt {
+      position: absolute;
+      top: -35%;
+      right: -35%;
+      width: 160%;
+      height: 140%;
+      background: #b71c1c;
+      transform: rotate(-40deg);
+      z-index: -2;
+    }
+
+    /* Add very soft dark overlay for contrast */
+    .bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.15);
+      z-index: -1;
+    }
+
+
+    /****************************************
+     **  ORIGINAL ANIMATIONS — PRESERVED   **
+     ****************************************/
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(25px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake { animation: shake 0.25s linear; }
+
+    .animated {
+      animation: fadeUp 0.7s ease-out forwards;
+    }
+
+    .animated-delay-1 { animation-delay: 0.1s; }
+    .animated-delay-2 { animation-delay: 0.25s; }
+    .animated-delay-3 { animation-delay: 0.45s; }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      z-index: 5;
+      margin-top: 3rem;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .logo-area { text-align: center; opacity: 0; }
+    .logo-area img { width: 260px; height: auto; margin-bottom: 1rem; }
+
+    .logo-text p {
+      font-size: 2.8rem;
+      line-height: 1.3;
+      font-weight: bold;
+      margin: 0;
+    }
+
+
+    /****************************************
+     **  UPDATED LOGIN CARD TO MATCH IMAGE **
+     ****************************************/
+
+    .login-card {
+      background-color: rgba(255, 255, 255, 0.18);
+      border-radius: 1rem;
+      padding: 3rem 2.7rem;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+      width: 100%;
+      max-width: 480px;
+      min-height: 460px;
+      opacity: 0;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .login-card h3 {
+      font-size: 1.95rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: white;
+    }
+
+    .form-group { margin-bottom: 1.2rem; width: 100%; }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #f8f8f8;
+      font-size: 1rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 0.5rem;
+      color: #333;
+      font-size: 1rem;
+      background: #f7f7f7;
+    }
+
+    .login-button {
+      background-color: #fff;
+      color: #b71c1c;
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .login-button:hover {
+      background-color: #f2f2f2;
+      transform: translateY(-1px);
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(0,0,0,0.3);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+
+
+
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+        text-align: center;
+      }
+      .login-card { max-width: 90%; }
+    }
+
+  </style>
+
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('sideMenu').classList.toggle('open');
+      document.querySelector('.hamburger').classList.toggle('open');
+    }
+
+    window.onload = () => {
+      document.querySelector('.logo-area').classList.add('animated', 'animated-delay-1');
+      document.querySelector('.logo-text').classList.add('animated', 'animated-delay-2');
+      document.querySelector('.login-card').classList.add('animated', 'animated-delay-3');
+    };
+
+    function handleLogin(e) {
+      const id = document.getElementById("ID");
+      const pass = document.getElementById("password");
+      const btn = document.getElementById("loginBtn");
+
+      if (id.value.trim() === "" || pass.value.trim() === "") {
+        id.classList.add("shake");
+        pass.classList.add("shake");
+        setTimeout(() => {
+          id.classList.remove("shake");
+          pass.classList.remove("shake");
+        }, 300);
+        e.preventDefault();
+        return false;
+      }
+
+      
+    }
+  </script>
+
+</head>
+
+<body>
+
+  <!-- BACKGROUND SHAPES -->
+  <div class="bg-white-tilt"></div>
+  <div class="bg-red-tilt"></div>
+  <div class="bg-overlay"></div>
+
+
+
+  <!-- CONTENT -->
+  <div class="main-wrapper">
+    <div class="content">
+
+      <!-- LEFT SIDE -->
+      <div class="logo-area">
+        <img src="images/logo.png" alt="School Clinic Logo">
+        <div class="logo-text">
+          <p>School Health</p>
+          <p>Clinic</p>
+          <p>Management</p>
+          <p>System</p>
+        </div>
+      </div>
+
+      <!-- LOGIN -->
+      <div class="login-card">
+        <h3>LET'S GET LOGGED IN</h3>
+
+        <form action="index.php" method="POST" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="ID">ID</label>
+            <input type="text" id="ID" name="ID" placeholder="Your ID">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Your password">
+          </div>
+
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button id="loginBtn" type="submit" class="login-button">Log In</button>
+            <a href="student_registration.php" class="login-button" style="text-decoration: none; display: inline-block; text-align: center;">Register</a>
+          </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <a href="reset_password.php" style="color: #f8f8f8; text-decoration: underline; font-size: 1rem;">Forgot Password?</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
